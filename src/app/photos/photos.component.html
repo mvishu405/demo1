@@ -1,0 +1,44 @@
+<button (click)="showThubnail()">View Thumbnail And URL</button>
+
+<mat-slide-toggle>Toggle me!</mat-slide-toggle>
+
+<table border="2">
+    <tr>
+        <th>#</th>
+        <th>Album Id</th>
+        <th>Title</th>
+        <th>URL</th>
+        <th>Thumbnail URL</th>
+    </tr>
+    <tr *ngFor="let photo of photos$ | async">
+        <td>{{ photo.id }}</td>
+        <td>{{ photo.albumId }}</td>
+        <td>{{ photo.title }}</td>
+        <td *ngIf="!(togglePhoto$ | async); else showUrlImage">
+            {{ photo.url }}
+        </td>
+
+        <ng-template #showUrlImage>
+            <td>
+                <img
+                    [src]="photo.url"
+                    alt=""
+                    [ngStyle]="{ 'width.px': 100 }"
+                    (click)="openPhoto(photo)"
+                />
+            </td>
+        </ng-template>
+
+        <td *ngIf="!(togglePhoto$ | async); else elseBlock">
+            {{ photo.thumbnailUrl }}
+        </td>
+        <ng-template #elseBlock>
+            <td>
+                <img
+                    [src]="photo.thumbnailUrl"
+                    [ngStyle]="{ 'width.px': 100 }"
+                />
+            </td>
+        </ng-template>
+    </tr>
+</table>
